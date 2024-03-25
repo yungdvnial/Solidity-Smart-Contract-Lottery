@@ -85,7 +85,7 @@ contract Raffle is VRFConsumerBaseV2 {
 
 
     // This is the function that the Chainlink Automation nodes call to see if it's time to perform an upkeep
-    function checkUpKeep(
+    function checkUpkeep(
         bytes memory /*checkData */
     ) public view returns (bool upKeepNeeded, bytes memory /* performData */) {
         bool timeHasPassed = (block.timestamp - s_lastTimeStamp) >= i_interval; // time interval has passed
@@ -101,8 +101,8 @@ contract Raffle is VRFConsumerBaseV2 {
     //1. Get a random number
     //2.Use the random number to pick a player
     //3. Be automatically called after (x) amount of time has passed
-    function performUpKeep(bytes calldata /* performData */) external {
-        (bool upKeepNeeded, ) = checkUpKeep("");
+    function performUpkeep(bytes calldata /* performData */) external {
+        (bool upKeepNeeded, ) = checkUpkeep("");
         if (!upKeepNeeded) {
             revert Raffle__UpKeepNotNeeded(
                 address(this).balance,
@@ -110,7 +110,6 @@ contract Raffle is VRFConsumerBaseV2 {
                 uint256(s_raffleState)
             );
         }
-
         // check to see if enough time has passed
         s_raffleState = RaffleState.CALCULATING;
 
